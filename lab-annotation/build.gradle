@@ -1,0 +1,14 @@
+apply plugin: 'java-library'
+apply plugin: 'maven'
+group = 'com.github.leocheung0221'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+sourceCompatibility = "7"
+targetCompatibility = "7"
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
