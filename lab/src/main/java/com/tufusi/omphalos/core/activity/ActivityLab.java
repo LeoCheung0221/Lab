@@ -66,6 +66,7 @@ public class ActivityLab {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     public static synchronized <T extends ILabActivity> T buildActivity(Class<T> iLabPointer) {
         ActivityHandler activityHandler = getActivityHandler(iLabPointer);
 
@@ -78,6 +79,7 @@ public class ActivityLab {
      *
      * @param iLabPointer iLab接口对象指针
      */
+    @SuppressWarnings("unchecked")
     public static synchronized <T extends ILabActivity> Extend<T> buildExtendActivity(Class<T> iLabPointer) {
         ActivityHandler activityHandler = getActivityHandler(iLabPointer);
 

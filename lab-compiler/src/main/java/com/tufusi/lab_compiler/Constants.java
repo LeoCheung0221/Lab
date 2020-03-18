@@ -1,5 +1,7 @@
 package com.tufusi.lab_compiler;
 
+import com.squareup.javapoet.ClassName;
+
 public class Constants {
 
     // Java type
@@ -25,5 +27,9 @@ public class Constants {
     final static  String ACTIVITY_HELPER_SUFFIX = "Helper";
     final static  String IMPL_HELPER_SUFFIX = "ImplHelper";
     final static  String CLASS_NAME_SEPARATOR = "_";
+
+    public static final ClassName SETCLS = ClassName.get("java.util", "Set");
+
+    public static final ClassName LISTCLS = ClassName.get("java.util", "List");
 
 }

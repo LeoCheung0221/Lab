@@ -37,6 +37,7 @@ public class ImplLab {
     /**
      * 设置实现ILab接口的对象
      */
+    @SuppressWarnings("unchecked")
     private static void putImpl(Class api, ILab impl) {
         if (impl == null) {
             return;
@@ -51,6 +52,7 @@ public class ImplLab {
      * @param <T>  传递接口
      * @return 返回实现接口的对象
      */
+    @SuppressWarnings("unchecked")
     public static <T extends ILab> T getImpl(Class<T> iLab) {
         if (!iLab.isInterface()) {
             Lab.sLabConfig.getILabLog()
@@ -150,9 +152,9 @@ public class ImplLab {
         return deadLock;
     }
 
+    @SuppressWarnings("unchecked")
     private static <T extends ILab> T exceptionHandler(Class<T> iLab) {
         if (sRealImpls.get(iLab) == null) {
-
             return (T) new ImplHandler(iLab).mImplProxy;
         } else {
             return (T) sRealImpls.get(iLab);

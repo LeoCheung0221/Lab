@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.method_invoke).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }).start();
 
-                //hub
+                //lab
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -77,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.activity_navigation).setOnClickListener(new View.OnClickListener() {
             @Override
+            @SuppressWarnings("unchecked")
             public void onClick(View v) {
 //                Lab.getImpl(ITestApi.class).test(MainActivity.this);
 //                Lab.getImpl(ITestApi1.class).test(MainActivity.this);
@@ -92,10 +92,6 @@ public class MainActivity extends AppCompatActivity {
                 boolean found = Lab.getActivity(IActivityTest.class).activitySecond(mapList, 9);
                 Toast.makeText(MainActivity.this, "找到了对应的Activity ? " + found, Toast.LENGTH_LONG).show();
                 Lab.getActivityWithExtend(IActivityTest.class).withResult(MainActivity.this, 10).build().activitySecond(mapList, 9);
-
-//                Lab.getActivity(ITestApi.class).activitySecond("Hello", 10);
-//                Lab.getActivityWithExtend(ITestApi.class).build().activitySecond("Hello", 10);
-//                Lab.getActivityWithExtend(ITestApi.class).withResult(MainActivity.this, 5).build().activitySecond("Hello", 10);
             }
         });
 

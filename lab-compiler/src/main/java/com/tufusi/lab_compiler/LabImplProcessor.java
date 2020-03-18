@@ -10,6 +10,7 @@ import com.squareup.javapoet.TypeSpec;
 import com.tufusi.lab_annotation.IFindImplClz;
 import com.tufusi.lab_annotation.LabInject;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -79,17 +80,20 @@ public class LabImplProcessor extends BaseLabProcessor {
 
         //用来描述代码块的内容,包括普通的赋值,if判断,循环判断等
         CodeBlock.Builder staticBlock = CodeBlock.builder()
-                .addStatement(Constants.METHOD_GETAPIField + " = new $T()", HashSet.class)
+                .addStatement(Constants.METHOD_GETAPIField + " = new $T<>()", HashSet.class)
                 .addStatement(Constants.IMPL_INSTANCE + " = new " + implClzName + "()");
 
         for (String api : sameImplApiClass) {
             staticBlock.addStatement(Constants.METHOD_GETAPIField + ".add(" + api + ".class)");
         }
 
+        ClassName clz = ClassName.get("java.lang", "Class");
+        TypeName setOfClass = ParameterizedTypeName.get(Constants.SETCLS, clz);
+
         MethodSpec.Builder getSameImplApis = MethodSpec.methodBuilder(Constants.METHOD_GETAPIS)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Override.class)
-                .returns(Set.class)
+                .returns(setOfClass)
                 .addStatement("return " + Constants.METHOD_GETAPIField);
 
         MethodSpec.Builder newInstance = MethodSpec.methodBuilder("getInstance")

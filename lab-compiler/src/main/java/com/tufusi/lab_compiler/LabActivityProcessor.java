@@ -79,12 +79,15 @@ public class LabActivityProcessor extends BaseLabProcessor {
         TypeName stringList = ParameterizedTypeName.get(ClassName.get(List.class), ClassName.get(String.class));
 
         CodeBlock.Builder staticBlock = CodeBlock.builder()
-                .addStatement(Constants.Filed_ParamName + " = new $T()", ArrayList.class);
+                .addStatement(Constants.Filed_ParamName + " = new $T<>()", ArrayList.class);
+
+        ClassName string = ClassName.get("java.lang", "String");
+        TypeName listOfString = ParameterizedTypeName.get(Constants.LISTCLS, string);
 
         MethodSpec.Builder getParamNames = MethodSpec.methodBuilder(Constants.Filed_ParamName)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Override.class)
-                .returns(List.class)
+                .returns(listOfString)
                 .addStatement("return " + Constants.Filed_ParamName);
 
         info("LabActivityProcessor  qualifiedSuperClzName  %s ", qualifiedSuperClzName);

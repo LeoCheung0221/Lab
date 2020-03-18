@@ -7,7 +7,7 @@ import java.lang.reflect.Type;
  * 类型辅助器
  * 通过反射获取类类型
  */
-public class TypeHelper {
+public class TypeHelper<T> {
 
     Type tClass = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 

@@ -4,10 +4,12 @@ group = 'com.github.leocheung0221'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    implementation 'com.squareup:javapoet:1.10.0'
-    implementation 'com.google.auto.service:auto-service:1.0-rc4'
     implementation project(":lab-annotation")
+
+    // 用于生成Java文件的库
+    implementation 'com.squareup:javapoet:1.10.0'
+    annotationProcessor 'com.google.auto.service:auto-service:1.0-rc6' //自动注册注解处理器
+    implementation 'com.google.auto.service:auto-service:1.0-rc6'
 }
 
 sourceCompatibility = "7"
