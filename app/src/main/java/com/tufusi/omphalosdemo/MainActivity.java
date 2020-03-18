@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 mapList.add(b);
                 boolean found = Lab.getActivity(IActivityTest.class).activitySecond(mapList, 9);
                 Toast.makeText(MainActivity.this, "找到了对应的Activity ? " + found, Toast.LENGTH_LONG).show();
-                Lab.getActivityWithExtend(IActivityTest.class).withResult(MainActivity.this, 10).build().activitySecond(mapList, 9);
+//                Lab.getActivityWithExtend(IActivityTest.class).withResult(MainActivity.this, 10).build().activitySecond(mapList, 9);
             }
         });
 

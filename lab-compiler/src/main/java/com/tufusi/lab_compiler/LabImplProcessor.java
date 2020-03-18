@@ -10,7 +10,6 @@ import com.squareup.javapoet.TypeSpec;
 import com.tufusi.lab_annotation.IFindImplClz;
 import com.tufusi.lab_annotation.LabInject;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -80,11 +79,11 @@ public class LabImplProcessor extends BaseLabProcessor {
 
         //用来描述代码块的内容,包括普通的赋值,if判断,循环判断等
         CodeBlock.Builder staticBlock = CodeBlock.builder()
-                .addStatement(Constants.METHOD_GETAPIField + " = new $T<>()", HashSet.class)
+                .addStatement(Constants.METHOD_GETAPI_FIELD + " = new $T<>()", HashSet.class)
                 .addStatement(Constants.IMPL_INSTANCE + " = new " + implClzName + "()");
 
         for (String api : sameImplApiClass) {
-            staticBlock.addStatement(Constants.METHOD_GETAPIField + ".add(" + api + ".class)");
+            staticBlock.addStatement(Constants.METHOD_GETAPI_FIELD + ".add(" + api + ".class)");
         }
 
         ClassName clz = ClassName.get("java.lang", "Class");
@@ -94,7 +93,7 @@ public class LabImplProcessor extends BaseLabProcessor {
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Override.class)
                 .returns(setOfClass)
-                .addStatement("return " + Constants.METHOD_GETAPIField);
+                .addStatement("return " + Constants.METHOD_GETAPI_FIELD);
 
         MethodSpec.Builder newInstance = MethodSpec.methodBuilder("getInstance")
                 .addModifiers(Modifier.PUBLIC)
@@ -110,7 +109,7 @@ public class LabImplProcessor extends BaseLabProcessor {
                 .addSuperinterface(TypeName.get(IFindImplClz.class))
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addMethod(newInstance.build())
-                .addField(stringSet, Constants.METHOD_GETAPIField, Modifier.FINAL, Modifier.STATIC, Modifier.PRIVATE)
+                .addField(stringSet, Constants.METHOD_GETAPI_FIELD, Modifier.FINAL, Modifier.STATIC, Modifier.PRIVATE)
                 .addField(newStaticInstance, Constants.IMPL_INSTANCE, Modifier.FINAL, Modifier.STATIC, Modifier.PRIVATE)
                 .addStaticBlock(staticBlock.build())
                 .addMethod(getSameImplApis.build())

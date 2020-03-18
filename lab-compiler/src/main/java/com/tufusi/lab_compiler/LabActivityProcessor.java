@@ -9,11 +9,8 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.tufusi.lab_annotation.IFindActivity;
 import com.tufusi.lab_annotation.LabActivity;
-import com.tufusi.lab_annotation.LabInject;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,7 +24,6 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.MirroredTypesException;
 import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
 
 /**
  * Created by 鼠夏目 on 2020/3/10.
@@ -79,16 +75,16 @@ public class LabActivityProcessor extends BaseLabProcessor {
         TypeName stringList = ParameterizedTypeName.get(ClassName.get(List.class), ClassName.get(String.class));
 
         CodeBlock.Builder staticBlock = CodeBlock.builder()
-                .addStatement(Constants.Filed_ParamName + " = new $T<>()", ArrayList.class);
+                .addStatement(Constants.FIELD_PARAMNAME + " = new $T<>()", ArrayList.class);
 
         ClassName string = ClassName.get("java.lang", "String");
         TypeName listOfString = ParameterizedTypeName.get(Constants.LISTCLS, string);
 
-        MethodSpec.Builder getParamNames = MethodSpec.methodBuilder(Constants.Filed_ParamName)
+        MethodSpec.Builder getParamNames = MethodSpec.methodBuilder(Constants.FIELD_PARAMNAME)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Override.class)
                 .returns(listOfString)
-                .addStatement("return " + Constants.Filed_ParamName);
+                .addStatement("return " + Constants.FIELD_PARAMNAME);
 
         info("LabActivityProcessor  qualifiedSuperClzName  %s ", qualifiedSuperClzName);
         MethodSpec.Builder methodInject = MethodSpec.methodBuilder(Constants.METHOD_INJECT)
@@ -104,7 +100,7 @@ public class LabActivityProcessor extends BaseLabProcessor {
                 for (VariableElement variableElement : ((ExecutableElement) element).getParameters()) {
                     info("LabActivityProcessor parameter %s", variableElement.getSimpleName());
 
-                    staticBlock.addStatement(Constants.Filed_ParamName + ".add($S)", variableElement.getSimpleName());
+                    staticBlock.addStatement(Constants.FIELD_PARAMNAME + ".add($S)", variableElement.getSimpleName());
                     String originalValue = ASSIGN_TARGET_DOT + variableElement.getSimpleName();
                     String assignStatement = ASSIGN_TARGET_DOT + variableElement.getSimpleName() +
                             " = " + ASSIGN_TARGET_DOT + "getIntent().";
@@ -120,7 +116,7 @@ public class LabActivityProcessor extends BaseLabProcessor {
             }
         }
 
-        MethodSpec.Builder targetActivity = MethodSpec.methodBuilder(Constants.METHOD_GETActivityField)
+        MethodSpec.Builder targetActivity = MethodSpec.methodBuilder(Constants.METHOD_GET_ACTIVITY_FIELD)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Override.class)
                 .returns(Class.class)
@@ -132,7 +128,7 @@ public class LabActivityProcessor extends BaseLabProcessor {
         TypeSpec impl = TypeSpec.classBuilder(apiSimpleName + Constants.CLASS_NAME_SEPARATOR + path + Constants.CLASS_NAME_SEPARATOR + Constants.ACTIVITY_HELPER_SUFFIX)
                 .addSuperinterface(TypeName.get(IFindActivity.class))
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-                .addField(stringList, Constants.Filed_ParamName, Modifier.STATIC, Modifier.PRIVATE)
+                .addField(stringList, Constants.FIELD_PARAMNAME, Modifier.STATIC, Modifier.PRIVATE)
                 .addStaticBlock(staticBlock.build())
                 .addMethod(getParamNames.build())
                 .addMethod(methodInject.build())
@@ -161,7 +157,7 @@ public class LabActivityProcessor extends BaseLabProcessor {
             assignStatement += "getCharExtra($S, " + originalValue + ")";
         } else if (Constants.FLOAT.equals(type) || typeKind == TypeKind.FLOAT) {
             assignStatement += "getFloatExtra($S, " + originalValue + ")";
-        } else if (Constants.DOUBEL.equals(type) || typeKind == TypeKind.DOUBLE) {
+        } else if (Constants.DOUBLE.equals(type) || typeKind == TypeKind.DOUBLE) {
             assignStatement += "getDoubleExtra($S, " + originalValue + ")";
         } else if (Constants.STRING.equals(type)) {
             assignStatement += "getStringExtra($S)";
